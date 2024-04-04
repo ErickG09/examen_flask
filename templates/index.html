@@ -1,0 +1,52 @@
+<!-- templates/manage_games.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Videojuegos</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 800px; margin: auto; padding: 20px; }
+        form > div { margin-bottom: 10px; }
+        label { display: block; }
+        input, select, button { width: 100%; padding: 10px; }
+        .videojuego { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+        .videojuego img { max-width: 100px; max-height: 100px; }
+        .acciones { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gestión de Videojuegos</h1>
+
+        <h2>Crear Videojuego</h2>
+        <form method="post" action="/crear">
+            <div><label>Título:</label><input type="text" name="titulo" required></div>
+            <div><label>Descripción:</label><input type="text" name="descripcion" required></div>
+            <div><label>Desarrollador:</label><input type="text" name="desarrollador" required></div>
+            <div><label>Año de Lanzamiento:</label><input type="number" name="lanzamiento" required></div>
+            <div><label>Plataforma:</label><input type="text" name="plataforma" required></div>
+            <div><label>Clasificación:</label><input type="text" name="clasificacion" required></div>
+            <div><label>URL de Imagen:</label><input type="text" name="imagen_url" required></div>
+            <button type="submit">Crear Videojuego</button>
+        </form>
+
+        <h2>Lista de Videojuegos</h2>
+        {% for juego in videojuegos %}
+            <div class="videojuego">
+                <h3>{{ juego.titulo }}</h3>
+                <p>{{ juego.descripcion }}</p>
+                <p>{{ juego.desarrollador }}</p>
+                <p>{{ juego.lanzamiento }}</p>
+                <p>{{ juego.plataforma }}</p>
+                <p>{{ juego.clasificacion }}</p>
+                <p>{{ juego.imagen_url }}</p>
+
+                <p></p>
+                <div class="acciones">
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
