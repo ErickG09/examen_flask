@@ -7,8 +7,8 @@ import os
 
 load_dotenv()
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///games.db'
 
 db = SQLAlchemy(app)
 
@@ -71,7 +71,7 @@ def CrearVideojuego():
                       imagen_url=request.json['imagen_url'])
     db.session.add(game)  # Agrega la tarea a la BD
     db.session.commit()  # Guarda los cambios en la BD
-    return jsonify({'Videojuegos': game.GamesDb}), 201 
+    return jsonify({'Videojuegos': game.GamesDb()}), 201 
 
 
 # Endpoint para leer todos los videojuegos registrados con la solicitud GET
