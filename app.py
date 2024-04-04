@@ -7,8 +7,8 @@ import os
 
 load_dotenv()
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv['SQLALCHEMY_DATABASE_URI'] 
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
 
 db = SQLAlchemy(app)
 
@@ -78,7 +78,8 @@ def CrearVideojuego():
 @app.route(BASE_URL + 'games', methods=['GET'])
 def Leer_videojuegos():
     games = Videogames.query.all()  # Recupera todas las tareas de la BD
-    return jsonify({'Videojuegos': [games.GamesDb() for game in games]}) 
+    return jsonify({'Videojuegos': [game.GamesDb() for game in games]})
+
 
 # # LEER UNA TAREA ESPECÍFICA MEDIANTE EL ID CON LA SOLICITUD GET
 # Endpoint para leer un registro de un videojuego mediante su id
@@ -98,13 +99,18 @@ def Actualizar_juego(id):
         return jsonify({'error': 'Game not found'}), 404
     if not request.json:
         abort(400, "Missing JSON body in request")
-    game = Videogames(titulo=request.json['titulo'], descripcion=request.json['descripcion'],
-                      desarrollador=request.json['desarrollador'], lanzamiento=request.json['lanzamiento'],
-                      plataforma=request.json['plataforma'], clasificacion=request.json['clasificacion'],
-                      imagen_url=request.json['imagen_url'])
-    db.session.add(game)  
+    
+    game.titulo = request.json.get('titulo', game.titulo)
+    game.descripcion = request.json.get('descripcion', game.descripcion)
+    game.desarrollador = request.json.get('desarrollador', game.desarrollador)
+    game.lanzamiento = request.json.get('lanzamiento', game.lanzamiento)
+    game.plataforma = request.json.get('plataforma', game.plataforma)
+    game.clasificacion = request.json.get('clasificacion', game.clasificacion)
+    game.imagen_url = request.json.get('imagen_url', game.imagen_url)
+    
     db.session.commit()  
-    return jsonify({'Videojuegos': game.GamesDb()}), 201
+    return jsonify({'Videojuegos': game.GamesDb()}), 200
+
 
 # Endpoint para eliminar un registro de algún videojuego
 @app.route(BASE_URL + 'games/<int:id>', methods=['DELETE'])
